@@ -1,0 +1,56 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    activemodel (7.0.2.2)
+      activesupport (= 7.0.2.2)
+    activemodel-serializers-xml (1.0.2)
+      activemodel (> 5.x)
+      activesupport (> 5.x)
+      builder (~> 3.1)
+    activeresource (6.0.0)
+      activemodel (>= 6.0)
+      activemodel-serializers-xml (~> 1.0)
+      activesupport (>= 6.0)
+    activesupport (7.0.2.2)
+      concurrent-ruby (~> 1.0, >= 1.0.2)
+      i18n (>= 1.6, < 2)
+      minitest (>= 5.1)
+      tzinfo (~> 2.0)
+    builder (3.2.4)
+    concurrent-ruby (1.1.9)
+    graphql (1.13.10)
+    graphql-client (0.17.0)
+      activesupport (>= 3.0)
+      graphql (~> 1.10)
+    i18n (1.10.0)
+      concurrent-ruby (~> 1.0)
+    minitest (5.15.0)
+    mustermann (1.1.1)
+      ruby2_keywords (~> 0.0.1)
+    rack (2.2.3)
+    rack-protection (2.2.0)
+      rack
+    ruby2_keywords (0.0.5)
+    shopify_api (9.5.1)
+      activeresource (>= 4.1.0)
+      graphql-client
+      rack
+    sinatra (2.2.0)
+      mustermann (~> 1.0)
+      rack (~> 2.2)
+      rack-protection (= 2.2.0)
+      tilt (~> 2.0)
+    tilt (2.0.10)
+    tzinfo (2.0.4)
+      concurrent-ruby (~> 1.0)
+
+PLATFORMS
+  x64-mingw32
+
+DEPENDENCIES
+  activesupport
+  shopify_api
+  sinatra
+
+BUNDLED WITH
+   2.2.32
