@@ -21,10 +21,16 @@ helpers do
   puts "hello"
   # Compare the computed HMAC digest based on the API secret key and the request contents to the reported HMAC in the headers
   def verify_webhook(data, hmac_header)
-    calculated_hmac = Base64.strict_encode64(OpenSSL::HMAC.digest('sha256', SHARED_SECRET_KEY, data))
-    unless ActiveSupport::SecurityUtils.secure_compare(calculated_hmac, hmac_header)
-      return [403,'Authorization failed; prvided HMAC was #{hmac_header}']
-    end
+ 
+    message = 'host=ZHJlc3NpZnktdGVzdC1zdG9yZS5teXNob3BpZnkuY29tL2FkbWlu&locale=en-IN&session=7d03c7f33615b262cc1bb75f1485886f1e2bb81a66c3bd5f930160be7b784b5f&shop=dressify-test-store.myshopify.com&timestamp=1646912170'
+    
+    digest = Base64.strict_encode64(OpenSSL::HMAC.digest('sha256', SHARED_SECRET_KEY, message))
+    ActiveSupport::SecurityUtils.secure_compare(digest, "3a69dbd177ed794387f74153e9fd106b8907ccaf19056aa6b1096d909c1cb99f")
+
+    #calculated_hmac = Base64.strict_encode64(OpenSSL::HMAC.digest('sha256', SHARED_SECRET_KEY, data))
+    #unless ActiveSupport::SecurityUtils.secure_compare(calculated_hmac, hmac_header)
+      #return [403,'Authorization failed; prvided HMAC was #{hmac_header}']
+    #end
   end
 end
 puts "Hello"

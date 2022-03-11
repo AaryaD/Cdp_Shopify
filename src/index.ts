@@ -3,15 +3,13 @@ import express, { request, response } from 'express';
 import Shopify, { ApiVersion, AuthQuery, GraphqlWithSession, WithSessionParams } from '@shopify/shopify-api';
 import createApp from '@shopify/app-bridge';
 import { Redirect } from '@shopify/app-bridge/actions';
+import { redirect } from '@shopify/app-bridge/client/redirect';
 //import { app } from '@shopify/app-bridge/actions/Print';
+
+
 require('dotenv').config();
 
 const app = express();
-
-const apiKey = '9409c693fe056fb65fa52a142e3ebaa0';
-const redirectUri = 'https://f843-2402-e280-3e04-88-f907-4870-fee2-5ab2.ngrok.io/';
-const permissionUrl = `https://dressify-test-store.myshopify.com/admin/oauth/authorize?client_id=9409c693fe056fb65fa52a142e3ebaa0}&scope=read_products,read_content&redirect_uri=https://f843-2402-e280-3e04-88-f907-4870-fee2-5ab2.ngrok.io/`;
-
 const { API_KEY, API_SECRET_KEY, SCOPES, SHOP, HOST, } = process.env;
 
 Shopify.Context.initialize({
@@ -24,33 +22,6 @@ Shopify.Context.initialize({
   SESSION_STORAGE: new Shopify.Session.MemorySessionStorage()
 });
 
-var window = global;
-var loc = "https://f843-2402-e280-3e04-88-f907-4870-fee2-5ab2.ngrok.io";
-console.log(loc);
-//window.location = "https://f843-2402-e280-3e04-88-f907-4870-fee2-5ab2.ngrok.io";
-if (typeof window!== "undefined") {
-  console.log("On the browser");
-  console.log(window);
-}
-else
-{
-  console.log("On the server");
-}
-// If the current window is the 'parent', change the URL by setting location.href
-if (window.top == window.self) {
-  window.location.assign(loc);
-  //window.location.assign(permissionUrl);
-  //window.location.href=permissionUrl;
-  // If the current window is the 'child', change the parent's URL with Shopify App Bridge's Redirect action
-} else {
-  const app = createApp({
-    apiKey: apiKey,
-    host: HOST
-  }
-  );
- 
- Redirect.create(app).dispatch(Redirect.Action.REMOTE, permissionUrl);
-}
 const handleWebhookRequest = async (topic: string, shop: string, webhookRequestBody: string) => {
   // handler triggered when a webhook is sent by the Shopify platform to your application
 }

@@ -25,14 +25,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // src/index.ts
 const express_1 = __importDefault(require("express"));
 const shopify_api_1 = __importStar(require("@shopify/shopify-api"));
-const app_bridge_1 = __importDefault(require("@shopify/app-bridge"));
-const actions_1 = require("@shopify/app-bridge/actions");
 //import { app } from '@shopify/app-bridge/actions/Print';
 require('dotenv').config();
 const app = (0, express_1.default)();
-const apiKey = '9409c693fe056fb65fa52a142e3ebaa0';
-const redirectUri = 'https://f843-2402-e280-3e04-88-f907-4870-fee2-5ab2.ngrok.io/';
-const permissionUrl = `https://dressify-test-store.myshopify.com/admin/oauth/authorize?client_id=9409c693fe056fb65fa52a142e3ebaa0}&scope=read_products,read_content&redirect_uri=https://f843-2402-e280-3e04-88-f907-4870-fee2-5ab2.ngrok.io/`;
 const { API_KEY, API_SECRET_KEY, SCOPES, SHOP, HOST, } = process.env;
 shopify_api_1.default.Context.initialize({
     API_KEY,
@@ -43,31 +38,6 @@ shopify_api_1.default.Context.initialize({
     API_VERSION: shopify_api_1.ApiVersion.October21,
     SESSION_STORAGE: new shopify_api_1.default.Session.MemorySessionStorage()
 });
-var window = global;
-var loc = "https://f843-2402-e280-3e04-88-f907-4870-fee2-5ab2.ngrok.io";
-console.log(loc);
-//window.location = "https://f843-2402-e280-3e04-88-f907-4870-fee2-5ab2.ngrok.io";
-if (typeof window !== "undefined") {
-    console.log("On the browser");
-    console.log(window);
-}
-else {
-    console.log("On the server");
-}
-// If the current window is the 'parent', change the URL by setting location.href
-if (window.top == window.self) {
-    window.location.assign(loc);
-    //window.location.assign(permissionUrl);
-    //window.location.href=permissionUrl;
-    // If the current window is the 'child', change the parent's URL with Shopify App Bridge's Redirect action
-}
-else {
-    const app = (0, app_bridge_1.default)({
-        apiKey: apiKey,
-        host: HOST
-    });
-    actions_1.Redirect.create(app).dispatch(actions_1.Redirect.Action.REMOTE, permissionUrl);
-}
 const handleWebhookRequest = async (topic, shop, webhookRequestBody) => {
     // handler triggered when a webhook is sent by the Shopify platform to your application
 };

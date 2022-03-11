@@ -195,16 +195,16 @@ const products = await client.query({
 server.use(function (req, res, next) {
   var shopurl;
   var fa;
-
+  console.log(req.query.shop)
   if (req.query.shop !== "") {
     shopurl = req.query.shop;
-    //fa = `frame-ancestors ${shopurl} admin.shopify.com`;
-    //res.setHeader(
-    //  "Content-Security-Policy",
-    // fa
-    //);
+    fa = `frame-ancestors ${shopurl} admin.shopify.com`;
+    res.setHeader(
+      "Content-Security-Policy",
+     fa
+    );
     //res.setHeader("Access-Control-Allow-Origin", "https://www.youtube.com/*");
-    res.setHeader('Content-Security-Policy', "frame-ancestors 'self' https://dressify-test-store.myshopify.com/");
+    //res.setHeader('Content-Security-Policy', "frame-ancestors 'self' https://dressify-test-store.myshopify.com/");
   }
   next();
 });

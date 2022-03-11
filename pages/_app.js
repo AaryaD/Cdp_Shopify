@@ -8,6 +8,43 @@ import { Redirect } from "@shopify/app-bridge/actions";
 import "@shopify/polaris/dist/styles.css";
 import translations from "@shopify/polaris/locales/en.json";
 import React from "react";
+import ClientRouter from "../components/ClientRouter";
+
+const host = 'ZHJlc3NpZnktdGVzdC1zdG9yZS5teXNob3BpZnkuY29tL2FkbWlu';
+const apiKey = '9409c693fe056fb65fa52a142e3ebaa0';
+const redirectUri = 'https://f843-2402-e280-3e04-88-f907-4870-fee2-5ab2.ngrok.io/';
+const permissionUrl = `https://${host}/admin/oauth/authorize?client_id=9409c693fe056fb65fa52a142e3ebaa0}&scope=read_products,read_content&redirect_uri=https://f843-2402-e280-3e04-88-f907-4870-fee2-5ab2.ngrok.io/`;
+const client_id=`${apiKey}&scope=read_products,read_content&redirect_uri=${redirectUri}`;
+
+//var window = getWindow();
+var window = global;
+if (typeof window!== "undefined") {
+  console.log("On the browser");
+  console.log(window);
+}
+else
+{
+  console.log("On the server");
+}
+
+// If the current window is the 'parent', change the URL by setting location.href
+if (window.top == window.self) {
+  window.location.assign(permissionUrl);
+  //window.location.assign(permissionUrl);
+  //window.location.href=permissionUrl;
+  // If the current window is the 'child', change the parent's URL with Shopify App Bridge's Redirect action
+} else {
+  const app = createApp({
+    apiKey: apiKey,
+    host: host
+  }
+  );
+ Redirect.create(app).dispatch(Redirect.Action.REMOTE, permissionUrl);
+}
+const app = createApp({
+  apiKey: apiKey,
+  host: host
+});
 
 function getData() {
   fetch('https://dressify-test-store.myshopify.com/')
@@ -71,6 +108,7 @@ class MyApp extends App {
             <meta charSet="utf-8" />
         </Head>
         <Provider config={config}>
+          <ClientRouter/>
           <AppProvider i18n={translations}> 
             <Component {...pageProps} />
           </AppProvider>
@@ -83,7 +121,7 @@ class MyApp extends App {
 MyApp.getInitialProps = async ({ ctx }) => {
   return {
     shopOrigin: ctx.query.shop,
-    API_KEY = process.env.API_KEY
+    API_KEY : process.env.API_KEY
     //host: ctx.query.host,
   };
 };
